@@ -1,5 +1,3 @@
-// const moment = require('moment');
-
 /* global Log, Module, moment, config */
 /* Magic Mirror
  * Module: on-this-day
@@ -7,13 +5,15 @@
  * By Ellie Fairholm
  */
 
+/* eslint-disable indent */
+
 Module.register("on-this-day", {
 
   // Default configuartion:
 
   defaults: {
-    updateInterval: undefined, // the fact will update daily at 00:00, if you want it to be updated more regularly specify a time in ms 
-    apiBase: "localhost://3003", // if i publish the api this will later be the api url
+    updateInterval: undefined, // the fact will update daily at 00:00, if you want it to be updated more regularly specify a time in ms
+    apiBase: "http://localhost:3003", // if i publish the api this will later be the api url
     appid: "/facts", // if my database is big enough then this will be able to be changed to sport etc
     animationSpeed: 1000,
     interest: ["history"], // if my database is big enough then this will be able to be changed to sport etc
@@ -37,13 +37,30 @@ Module.register("on-this-day", {
 
     Log.info("Starting module: ", this.name);
 
-    this.title = "On this day in ";
-    this.year = "2020"; // change this to be dynamic
-    this.fact = "Your daily fact is being loaded."
+    this.getDate();
+    this.getFact(this.formattedDate);
+
+  },
+
+  getDate: function () {
+
+    const date = setInterval(function () {
+      return Date.now();
+    }, 1000 * 60);
+
+    this.formattedDate = moment(Date.now()).format("L").slice(0, 5).replace("/", "-");
+    this.time = moment(date).format("HH:mm");
   },
 
   // Override dom generator.
   getDom: function () {
+
+    // If there is no fact, nothing loads:
+
+    if (!this.fact) {
+      return;
+    }
+
     const wrapper = document.createElement("div");
     const titleWrapper = document.createElement("div");
     const yearWrapper = document.createElement("span");
@@ -56,11 +73,11 @@ Module.register("on-this-day", {
     titleWrapper.className = "title dimmed medium normal";
     yearWrapper.className = "title bright medium light";
     colonWrapper.className = "title dimmed medium normal";
-    factWrapper.className = "title bright medium light";
+    factWrapper.className = "title bright large light";
 
     // Set default values for my wrappers:
 
-    titleWrapper.innerHTML = this.title;
+    titleWrapper.innerHTML = "On this day in ";
     yearWrapper.innerHTML = this.year;
     colonWrapper.innerHTML = ":";
     factWrapper.innerHTML = this.fact;
@@ -77,12 +94,6 @@ Module.register("on-this-day", {
   },
 
   scheduleUpdateRequest: function (delay) {
-    const self = this;
-
-    const date = Date.now();
-
-    const formattedDate = moment(date).format('L').slice(0, 5);
-    const time = moment(date).format('HH:mm');
 
     const specifiedDelay = this.config.updateInterval;
 
@@ -94,33 +105,44 @@ Module.register("on-this-day", {
 
     // Automatically programs the fact to update at midnight:
 
-    if (time === "00:00") getFact(formattedDate);
+    if (this.time === "00:00") {
+      self.getFact(formattedDate);
+    }
 
   },
 
   // Retrieve the fact from the API:
 
-  getFact: async function (date) {
-    if (!this.config.appid) Log.error('on-this-day: APPID not set!');
+  getFact: async function (formattedDate) {
+    if (!this.config.appid) {
+      Log.error("on-this-day: APPID not set!");
+    }
 
     const self = this;
     const url = this.config.apiBase + this.config.appid;
 
-    const data = await fetch(url)
+    let data = await fetch(`${url}/${formattedDate}`)
       .then(result => result.status < 400 ? result : Promise.reject())
       .then(result => result.status === 204 ? result : result.json())
       .catch(error => Log.error(error));
 
-    if (data) this.updateFact(data);
-    else Log.error('on-this-day: unable to get fact!');
+    // Choose a random fact from the array returned from the API:
+
+    if (data && data.length) {
+      const index = Math.floor(Math.random() * data.length);
+      data = data[index];
+      self.updateFact(data);
+    } else {
+      Log.error("on-this-day: unable to get fact!");
+    };
   },
 
   // Re-render the DOM:
 
   updateFact: function (data) {
 
-    this.year = data.year
-    this.fact = data.fact
+    this.year = data.year;
+    this.fact = data.fact;
 
     this.updateDom(this.config.animationSpeed);
 
