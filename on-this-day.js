@@ -79,20 +79,22 @@ Module.register("on-this-day", {
   scheduleUpdateRequest: function (delay) {
     const self = this;
 
-    const date = moment(date).format('L').slice(0, 5);
-    const time = moment(Date.now()).format('HH:mm');
+    const date = Date.now();
+
+    const formattedDate = moment(date).format('L').slice(0, 5);
+    const time = moment(date).format('HH:mm');
 
     const specifiedDelay = this.config.updateInterval;
 
     if (specifiedDelay) {
       setInterval(function () {
-        self.getFact(date);
+        self.getFact(formattedDate);
       }, delay);
     }
 
     // Automatically programs the fact to update at midnight:
 
-    if (time === "00:00") getFact(date);
+    if (time === "00:00") getFact(formattedDate);
 
   },
 
