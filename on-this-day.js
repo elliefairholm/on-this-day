@@ -9,14 +9,14 @@
 
 Module.register("on-this-day", {
 
-  // Default settings:
+  // Default configuartion:
 
   defaults: {
     updateInterval: undefined, // the fact will update daily at 00:00, if you want it to be updated more regularly specify a time in ms 
     apiBase: "localhost://3003", // if i publish the api this will later be the api url
     appid: "/facts", // if my database is big enough then this will be able to be changed to sport etc
     animationSpeed: 1000,
-    interest: ["history"] // if my database is big enough then this will be able to be changed to sport etc
+    interest: ["history"], // if my database is big enough then this will be able to be changed to sport etc
   },
 
   // If the language setting has been changed in the main config file:
@@ -42,8 +42,8 @@ Module.register("on-this-day", {
     this.fact = "Your daily fact is being loaded."
   },
 
+  // Override dom generator.
   getDom: function () {
-
     const wrapper = document.createElement("div");
     const titleWrapper = document.createElement("div");
     const yearWrapper = document.createElement("span");
@@ -53,15 +53,16 @@ Module.register("on-this-day", {
     // Stylings for my wrappers:
 
     wrapper.className = "container";
-    titleWrapper.className = "title normal small";
+    titleWrapper.className = "title dimmed medium normal";
     yearWrapper.className = "title bright medium light";
-    colonWrapper.className = "title normal small";
+    colonWrapper.className = "title dimmed medium normal";
     factWrapper.className = "title bright medium light";
 
     // Set default values for my wrappers:
 
     titleWrapper.innerHTML = this.title;
     yearWrapper.innerHTML = this.year;
+    colonWrapper.innerHTML = ":";
     factWrapper.innerHTML = this.fact;
 
     titleWrapper.appendChild(yearWrapper);
@@ -97,7 +98,7 @@ Module.register("on-this-day", {
 
   // Retrieve the fact from the API:
 
-  async getFact: function (date) {
+  getFact: async function (date) {
     if (!this.config.appid) Log.error('on-this-day: APPID not set!');
 
     const self = this;
