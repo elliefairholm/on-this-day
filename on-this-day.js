@@ -16,7 +16,7 @@ Module.register("on-this-day", {
     apiBase: "http://localhost:3003", // if i publish the api this will later be the api url
     appid: "/facts", // if my database is big enough then this will be able to be changed to sport etc
     animationSpeed: 1000,
-    interest: ["history"], // if my database is big enough then this will be able to be changed to sport etc
+    interest: ["general"], // if my database is big enough then this will be able to be changed to sport etc
   },
 
   // If the language setting has been changed in the main config file:
@@ -73,7 +73,7 @@ Module.register("on-this-day", {
     titleWrapper.className = "title dimmed medium normal";
     yearWrapper.className = "title bright medium light";
     colonWrapper.className = "title dimmed medium normal";
-    factWrapper.className = "title bright large light";
+    factWrapper.className = "title bright medium light";
 
     // Set default values for my wrappers:
 
