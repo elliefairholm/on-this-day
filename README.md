@@ -2,11 +2,12 @@
 
 `on-this-day` is a module for [MagicMirror²](https://magicmirror.builders/) that displays a random fact of something that happened on this day in history.
 
+![on-this-day-example-english](images/on-this-day-example-english.png)
+
 This module is based on a personal API that is yet to be published.
 The facts are only available in English but are translated according to the language preference of your Magic Mirror.
 The fact is updated everyday at midnight.
 
-![on-this-day-example-english](images/on-this-day-example-english.png)
 
 ## Installation
 
