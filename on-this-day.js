@@ -16,7 +16,7 @@ Module.register("on-this-day", {
     apiBase: "http://localhost:3003", // if i publish the api this will later be the api url
     appid: "/facts", // if my database is big enough then this will be able to be changed to sport etc
     animationSpeed: 1000,
-    interests: ["film-tv", "sports"], // if my database is big enough then this will be able to be changed to sport etc
+    interests: ["general"], // if my database is big enough then this will be able to be changed to sport etc
   },
 
   // If the language setting has been changed in the main config file:
@@ -39,6 +39,7 @@ Module.register("on-this-day", {
 
     this.getDate();
     this.getFact(this.formattedDate);
+    this.scheduleUpdateRequest(this.formattedDate);
 
   },
 
@@ -49,7 +50,6 @@ Module.register("on-this-day", {
     }, 1000 * 60);
 
     this.formattedDate = moment(Date.now()).format("L").slice(0, 5).replace("/", "-");
-    this.time = moment(date).format("HH:mm");
   },
 
   // Override dom generator.
@@ -91,22 +91,31 @@ Module.register("on-this-day", {
     // Return the wrapper to the DOM:
 
     return wrapper;
+
   },
 
-  scheduleUpdateRequest: function (delay) {
+  // Automatically programs the fact to update at midnight:
+
+  notificationReceived: function (notification, payload, sender) {
+    const self = this;
+    if (notification === "CLOCK_MINUTE") {
+      const time = moment(Date.now()).format("HH:mm");
+      if (time === "00:00") {
+        self.getFact(self.formattedDate);
+      }
+    }
+  },
+
+  scheduleUpdateRequest: function () {
+
+    const self = this;
 
     const specifiedDelay = this.config.updateInterval;
 
     if (specifiedDelay) {
       setInterval(function () {
-        self.getFact(formattedDate);
-      }, delay);
-    }
-
-    // Automatically programs the fact to update at midnight:
-
-    if (this.time === "00:00") {
-      self.getFact(formattedDate);
+        self.getFact(self.formattedDate);
+      }, specifiedDelay);
     }
 
   },
@@ -161,3 +170,5 @@ Module.register("on-this-day", {
   }
 
 });
+
+// need to translate on this day in...
