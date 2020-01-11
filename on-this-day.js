@@ -14,9 +14,9 @@ Module.register("on-this-day", {
   defaults: {
     updateInterval: undefined, // the fact will update daily at 00:00, if you want it to be updated more regularly specify a time in ms
     apiBase: "http://localhost:3003", // if i publish the api this will later be the api url
-    appid: "/facts", // if my database is big enough then this will be able to be changed to sport etc
+    appid: "/facts", // need to delete and reformulate
     animationSpeed: 1000,
-    interests: ["general"], // if my database is big enough then this will be able to be changed to sport etc
+    interests: ["history"], // if my database is big enough then this will be able to be changed to sport etc
   },
 
   // If the language setting has been changed in the main config file:
@@ -142,6 +142,7 @@ Module.register("on-this-day", {
     if (data && data.length) {
       formattedData = [];
       if (this.config.interests.length === 1 && !this.config.interests.includes("general") || this.config.interests.length > 1) {
+        console.log("this.config.interests", this.config.interests);
         this.config.interests.forEach(function (interest) {
           data.forEach(function (fact) {
             if (fact.interests.includes(interest)) {
@@ -149,9 +150,12 @@ Module.register("on-this-day", {
             }
           });
         });
+      } else {
+        formattedData = data.slice();
       }
       const index = Math.floor(Math.random() * formattedData.length);
       formattedData = formattedData[index];
+      console.log(formattedData);
       self.updateFact(formattedData);
     } else {
       Log.error("on-this-day: unable to get fact!");
