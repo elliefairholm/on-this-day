@@ -9,9 +9,9 @@ The facts are only available in English but are translated according to the lang
 The fact is updated everyday at midnight.
 
 
-## Installation
+## Installation:
 
-Remote to your MM2-box with your terminal software and go to your MagicMirror's Module folder:
+Go to your MagicMirror's Module folder in your terminal:
 ````
 cd ~/MagicMirror/modules
 ````
@@ -37,17 +37,17 @@ Add the module to the modules array in the `config/config.js` file by adding the
     module: 'on-this-day',
     position: 'bottom_bar',
     config: {
-                // See below for configurable options
+                // see below for configurable options...
             }
 },
 ```
 
-## Configuration option
+## Configuration options:
 
 | Option                       | Description
 | ---------------------------- | -----------
 | `updateInterval`                   | How often the fact will be updated during the day. It is automatically updated everyday at 00:00. But if you wish for the fact to be updated more often, add your own timeframe in milliseconds (1000 = 1 second). <br><br> **Example:** `1000 * 60` = will be updated every minute. <br> **Default value:** `undefined`
-| `animationSpeed`                 | The speed of the update animation in milliseconds. <br><br> **Example:**`0` - `500` = half a second <br> **Default value:** `1000` = 1 second
-| `interests`                      | An array of interests you may have to curate the facts you will receive. <br><br> **Possible values:** `history`, `film-tv`, `sports` <br> **Default value:** `general`
+| `animationSpeed`                 | The speed of the update animation in milliseconds. <br><br> **Example:**`500` = half a second <br> **Default value:** `1000` = 1 second
+| `interests`                      | An array of interests you may have to curate the facts you will receive. <br><br> **Possible values:** `"history"`, `"film-tv"`, `"sports"` <br> **Default value:** `general`
 
 I hope you enjoy the module and learn something new everyday!
