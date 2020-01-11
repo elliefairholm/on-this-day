@@ -16,7 +16,7 @@ Module.register("on-this-day", {
     apiBase: "http://localhost:3003", // if i publish the api this will later be the api url
     appid: "/facts", // if my database is big enough then this will be able to be changed to sport etc
     animationSpeed: 1000,
-    interest: ["general"], // if my database is big enough then this will be able to be changed to sport etc
+    interests: ["film-tv", "sports"], // if my database is big enough then this will be able to be changed to sport etc
   },
 
   // If the language setting has been changed in the main config file:
@@ -121,17 +121,29 @@ Module.register("on-this-day", {
     const self = this;
     const url = this.config.apiBase + this.config.appid;
 
+    // Gets all the facts associated to the current day:
+
     let data = await fetch(`${url}/${formattedDate}`)
       .then(result => result.status < 400 ? result : Promise.reject())
       .then(result => result.status === 204 ? result : result.json())
       .catch(error => Log.error(error));
 
-    // Choose a random fact from the array returned from the API:
+    // Filters the array of racts returned according to your interests (if different from the default 'general'):
 
     if (data && data.length) {
-      const index = Math.floor(Math.random() * data.length);
-      data = data[index];
-      self.updateFact(data);
+      formattedData = [];
+      if (this.config.interests.length === 1 && !this.config.interests.includes("general") || this.config.interests.length > 1) {
+        this.config.interests.forEach(function (interest) {
+          data.forEach(function (fact) {
+            if (fact.interests.includes(interest)) {
+              formattedData.push(fact);
+            }
+          });
+        });
+      }
+      const index = Math.floor(Math.random() * formattedData.length);
+      formattedData = formattedData[index];
+      self.updateFact(formattedData);
     } else {
       Log.error("on-this-day: unable to get fact!");
     };
@@ -149,5 +161,3 @@ Module.register("on-this-day", {
   }
 
 });
-
-// need to translate on this day in...
