@@ -32,7 +32,7 @@ Add the module to the modules array in the `config/config.js` file by adding the
 ```
 {
     module: 'on-this-day',
-    position: 'bottom_center',
+    position: 'bottom_bar',
     config: {
                 // See below for configurable options
             }
