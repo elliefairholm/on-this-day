@@ -6,6 +6,8 @@ This module is based on a personal API that is yet to be published.
 The facts are only available in English but are translated according to the language preference of your Magic Mirror.
 The fact is updated everyday at midnight.
 
+![on-this-day-example-english](images/on-this-day-example-english.png)
+
 ## Installation
 
 Remote to your MM2-box with your terminal software and go to your MagicMirror's Module folder:
