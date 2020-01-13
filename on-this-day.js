@@ -13,10 +13,10 @@ Module.register("on-this-day", {
 
   defaults: {
     updateInterval: undefined, // the fact will update daily at 00:00, if you want it to be updated more regularly specify a time in ms
-    apiBase: "http://intense-sierra-66192.herokuapp.com", // if i publish the api this will later be the api url
-    appid: "/facts", // need to delete and reformulate
+    apiBase: "http://intense-sierra-66192.herokuapp.com",
+    appid: "/facts",
     animationSpeed: 1000,
-    interests: ["history"], // if my database is big enough then this will be able to be changed to sport etc
+    interests: ["history"],
   },
 
   // Define start sequence:
@@ -41,9 +41,10 @@ Module.register("on-this-day", {
   },
 
   // Override dom generator.
+
   getDom: function () {
 
-    // If there is no fact, nothing loads:
+    // If there is no fact, nothing should load:
 
     if (!this.fact) {
       const wrapper = document.createElement("div");
@@ -56,6 +57,8 @@ Module.register("on-this-day", {
       return wrapper;
 
     }
+
+    // If there is a fact:
 
     const wrapper = document.createElement("div");
     const titleWrapper = document.createElement("div");
@@ -70,8 +73,6 @@ Module.register("on-this-day", {
     yearWrapper.className = "title bright medium light";
     colonWrapper.className = "title dimmed medium normal";
     factWrapper.className = "title bright medium light";
-
-    // Set default values for my wrappers:
 
     titleWrapper.innerHTML = "On this day in ";
     yearWrapper.innerHTML = this.year;
@@ -101,6 +102,8 @@ Module.register("on-this-day", {
       }
     }
   },
+
+  // To update the fact every x milliseconds if an update interval has been specified:
 
   scheduleUpdateRequest: function () {
 
@@ -172,5 +175,3 @@ Module.register("on-this-day", {
   }
 
 });
-
-// need to translate on this day in...
