@@ -48,6 +48,6 @@ Add the module to the modules array in the `config/config.js` file by adding the
 | ---------------------------- | -----------
 | `updateInterval`                   | How often the fact will be updated during the day. It is automatically updated everyday at 00:00, but if you wish for the fact to be updated more often, add your own timeframe in milliseconds (1000 = 1 second). <br><br> **Example:** `1000 * 60` = will be updated every minute. <br> **Default value:** `undefined`
 | `animationSpeed`                 | The speed of the update animation in milliseconds. <br><br> **Example:**`500` = half a second. <br> **Default value:** `1000` = 1 second.
-| `interests`                      | An array of interests you may have to curate the facts you will receive. <br><br> **Possible values:** `"history"`, `"film-tv"`, `"sports"` <br> **Default value:** `general`
+| `interests`                      | An array of interests you may have to curate the facts you will receive. <br><br> **Possible values:** `"history"`, `"film-tv"`, `"sport"` <br> **Default value:** `general`
 
 I hope you enjoy the module and learn something new everyday!
