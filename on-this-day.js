@@ -13,23 +13,11 @@ Module.register("on-this-day", {
 
   defaults: {
     updateInterval: undefined, // the fact will update daily at 00:00, if you want it to be updated more regularly specify a time in ms
-    apiBase: "http://localhost:3003", // if i publish the api this will later be the api url
+    apiBase: "http://intense-sierra-66192.herokuapp.com", // if i publish the api this will later be the api url
     appid: "/facts", // need to delete and reformulate
     animationSpeed: 1000,
     interests: ["history"], // if my database is big enough then this will be able to be changed to sport etc
   },
-
-  // If the language setting has been changed in the main config file:
-
-  // translateText: function (fact) {
-
-  //   // takes the language from the config file:
-
-  //   const language = config.language;
-  //   const fact = "hello";
-  //   const translatedFact = "bonjour";
-  //   return translatedFact
-  // },
 
   // Define start sequence:
 
@@ -58,7 +46,15 @@ Module.register("on-this-day", {
     // If there is no fact, nothing loads:
 
     if (!this.fact) {
-      return;
+      const wrapper = document.createElement("div");
+      const loading = document.createElement("div");
+
+      loading.innerHTML = "Loading...";
+
+      wrapper.appendChild(loading);
+
+      return wrapper;
+
     }
 
     const wrapper = document.createElement("div");
@@ -142,7 +138,6 @@ Module.register("on-this-day", {
     if (data && data.length) {
       formattedData = [];
       if (this.config.interests.length === 1 && !this.config.interests.includes("general") || this.config.interests.length > 1) {
-        console.log("this.config.interests", this.config.interests);
         this.config.interests.forEach(function (interest) {
           data.forEach(function (fact) {
             if (fact.interests.includes(interest)) {
@@ -155,7 +150,6 @@ Module.register("on-this-day", {
       }
       const index = Math.floor(Math.random() * formattedData.length);
       formattedData = formattedData[index];
-      console.log(formattedData);
       self.updateFact(formattedData);
     } else {
       Log.error("on-this-day: unable to get fact!");
@@ -168,6 +162,10 @@ Module.register("on-this-day", {
 
     this.year = data.year;
     this.fact = data.fact;
+
+    if (config.language !== "en") {
+      this.translateText(this.fact);
+    }
 
     this.updateDom(this.config.animationSpeed);
 
