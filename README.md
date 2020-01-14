@@ -4,8 +4,9 @@
 
 ![on-this-day-example-english](images/on-this-day-example-english.png)
 
-This module is based on an API that I made myself which has hundreds of facts stored for each day of the year.
-The facts are only available in English, and the fact displayed on your Magic Mirror will be updated everyday at midnight.
+This module is based on an API that I made myself which has hundreds of facts stored for each day of the year. The facts are only available in English, the API is totally free to use and can be found at: http://intense-sierra-66192.herokuapp.com/facts/${day}. The day must be in the format 07-10, which would represent the 10th July.
+
+The fact displayed on your Magic Mirror will be updated everyday at midnight.
 
 
 ## Installation:
