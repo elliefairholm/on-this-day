@@ -16,7 +16,7 @@ Module.register("on-this-day", {
     apiBase: "http://intense-sierra-66192.herokuapp.com",
     appid: "/facts",
     animationSpeed: 1000,
-    interests: ["history"],
+    interests: ["general"],
   },
 
   // Define start sequence:
