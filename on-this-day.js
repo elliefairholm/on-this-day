@@ -13,7 +13,7 @@ Module.register("on-this-day", {
 
   defaults: {
     updateInterval: undefined, // the fact will update daily at 00:00, if you want it to be updated more regularly specify a time in ms
-    apiBase: "http://intense-sierra-66192.herokuapp.com",
+    apiBase: "http://on-this-day-api.herokuapp.com",
     appid: "/facts",
     animationSpeed: 1000,
     interests: ["general"],
