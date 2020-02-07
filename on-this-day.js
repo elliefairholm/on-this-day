@@ -152,8 +152,8 @@ Module.register("on-this-day", {
         formattedData = data.slice();
       }
       const index = Math.floor(Math.random() * formattedData.length);
-      formattedData = formattedData[index];
-      self.updateFact(formattedData);
+      const newFact = formattedData[index];
+      self.updateFact(newFact);
     } else {
       Log.error("on-this-day: unable to get fact!");
     };
