@@ -14,7 +14,7 @@ Module.register("on-this-day", {
   defaults: {
     updateInterval: undefined, // the fact will update daily at 00:00, if you want it to be updated more regularly specify a time in ms
     apiBase: "http://on-this-day-api.herokuapp.com",
-    appid: "/facts",
+    path: "/facts",
     animationSpeed: 1000,
     interests: ["general"],
   },
@@ -27,17 +27,14 @@ Module.register("on-this-day", {
 
     this.getDate();
     this.getFact(this.formattedDate);
-    this.scheduleUpdateRequest(this.formattedDate);
+    this.scheduleUpdateRequest();
 
   },
 
   getDate: function () {
 
-    const date = setInterval(function () {
-      return Date.now();
-    }, 1000 * 60);
+    this.formattedDate = moment(Date.now()).format().slice(5, 10);
 
-    this.formattedDate = moment(Date.now()).format("L").slice(0, 5).replace("/", "-");
   },
 
   // Override dom generator.
@@ -122,12 +119,12 @@ Module.register("on-this-day", {
   // Retrieve the fact from the API:
 
   getFact: async function (formattedDate) {
-    if (!this.config.appid) {
-      Log.error("on-this-day: APPID not set!");
+    if (!this.config.path) {
+      Log.error("on-this-day: this url path does not exist set!");
     }
 
     const self = this;
-    const url = this.config.apiBase + this.config.appid;
+    const url = this.config.apiBase + this.config.path;
 
     // Gets all the facts associated to the current day:
 
@@ -165,11 +162,6 @@ Module.register("on-this-day", {
 
     this.year = data.year;
     this.fact = data.fact;
-
-    if (config.language !== "en") {
-      this.translateText(this.fact);
-    }
-
     this.updateDom(this.config.animationSpeed);
 
   }
