@@ -32,8 +32,11 @@ Module.register("on-this-day", {
   },
 
   getDate: function () {
+    const timeStamp = new Date;
+    const month = (timeStamp.getMonth() + 1).toString().padStart(2, '0');
+    const day = (timeStamp.getDate()).toString().padStart(2, '0');
 
-    this.formattedDate = moment(Date.now()).format().slice(5, 10);
+    this.formattedDate = `${month}-${day}`;
 
   },
 
