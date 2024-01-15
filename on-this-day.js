@@ -25,9 +25,14 @@ Module.register("on-this-day", {
 
     Log.info("Starting module: ", this.name);
 
-    this.getDate();
-    this.getFact(this.formattedDate);
-    this.scheduleUpdateRequest();
+    formattedDate = this.getDate();
+    this.getFact(formattedDate);
+    this.updateFactAtMidnight();
+
+    const specifiedDelay = this.config.updateInterval;
+    if (specifiedDelay) {
+      this.scheduleUpdateRequest(specifiedDelay);
+    }
 
   },
 
@@ -36,7 +41,7 @@ Module.register("on-this-day", {
     const month = (timeStamp.getMonth() + 1).toString().padStart(2, '0');
     const day = (timeStamp.getDate()).toString().padStart(2, '0');
 
-    this.formattedDate = `${month}-${day}`;
+    return `${month}-${day}`;
 
   },
 
@@ -93,29 +98,28 @@ Module.register("on-this-day", {
 
   // Automatically programs the fact to update at midnight:
 
-  notificationReceived: function (notification, payload, sender) {
+  updateFactAtMidnight: function () {
     const self = this;
-    if (notification === "CLOCK_MINUTE") {
-      const time = moment(Date.now()).format("HH:mm");
-      if (time === "00:00") {
-        self.getFact(self.formattedDate);
+
+    setInterval(function () {
+      const time = moment(Date.now()).format("HH:mm:ss");
+      if (time === "00:00:00") {
+        const formattedDate = self.getDate();
+        self.getFact(formattedDate);
       }
-    }
+    }, 1000);
+
   },
 
-  // To update the fact every x milliseconds if an update interval has been specified:
+  // Updates the fact every x milliseconds if an update interval has been specified:
 
-  scheduleUpdateRequest: function () {
-
+  scheduleUpdateRequest: function (specifiedDelay) {
     const self = this;
 
-    const specifiedDelay = this.config.updateInterval;
-
-    if (specifiedDelay) {
-      setInterval(function () {
-        self.getFact(self.formattedDate);
-      }, specifiedDelay);
-    }
+    setInterval(function () {
+      const formattedDate = self.getDate()
+      self.getFact(formattedDate);
+    }, specifiedDelay);
 
   },
 
